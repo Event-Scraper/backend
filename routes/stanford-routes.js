@@ -61,8 +61,8 @@ stanfordRouter.get('/api/events/stanford/all', function(req, res, next) {
 					.text()
 					.replace(/(\r\n|\n|\r|\t)/gm, '')
 					.replace(/(\s+)/gm, ' ')
-
-				eventList[index]['icon'] = 'fas fa-calendar-alt'
+				eventList[index]['icon'] = 'fas fa-graduation-cap'
+				eventList[index]['source'] = 'Stanford'
 			})
 			res.json(eventList)
 		}
