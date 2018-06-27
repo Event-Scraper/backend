@@ -60,6 +60,7 @@ stanfordRouter.get('/api/events/stanford/all', function(req, res, next) {
 					.find('p')
 					.text()
 					.replace(/(\r\n|\n|\r|\t)/gm, '')
+					.replace(/(\s+)/gm, ' ')
 			})
 			res.json(eventList)
 		}
