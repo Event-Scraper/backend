@@ -20,51 +20,53 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 	debug('GET: /api/events/meetup/all')
 	request(options, function(err, resp, html) {
 		if (!err) {
+			let indexArr = []
 			let $ = cheerio.load(html)
 
-			console.log(html)
+			let eventList = []
+			$('.event-listing-container .event-listing').each(function(
+				index,
+				element
+			) {
+				console.log(
+					$('.event-listing-container .event-listing').length - 1,
+					index
+				)
+				let url = $(element)
+					.find('.row-item a')
+					.attr('href')
 
-			// let eventList = []
-			// $('#main-content .postcard-link').each(function(index, element) {
-			// 	eventList[index] = {}
+				let optionsTwo = {
+					url: url,
+					headers: {
+						'User-Agent': 'request'
+					}
+				}
+				eventList[index] = {}
 
-			// 	eventList[index]['url'] =
-			// 		'http://events.stanford.edu' + $(element).attr('href')
+				eventList[index]['title'] = $(element)
+					.find('.event span[itemprop="name"]')
+					.text()
 
-			// 	let mainDiv = $(element).find('.postcard-left')
-			// 	let imgDiv = $(mainDiv).find('.postcard-image')
-			// 	eventList[index]['imgUrl'] =
-			// 		'http://events.stanford.edu' +
-			// 		$(imgDiv)
-			// 			.find('img')
-			// 			.attr('src')
+				request(optionsTwo, function(err, resp, html) {
+					if (!err) {
+						let $ = cheerio.load(html)
 
-			// 	let text = $(mainDiv).find('.postcard-text')
-			// 	eventList[index]['title'] = $(text)
-			// 		.find('h3')
-			// 		.text()
-			// 		.replace(/(\r\n|\n|\r|\t)/gm, '')
-			// 		.replace(/(\s+)/gm, ' ')
-			// 		.trim()
-
-			// 	eventList[index]['time'] = $(text)
-			// 		.find('p')
-			// 		.find('strong')
-			// 		.text()
-			// 		.replace(/(\r\n|\n|\r|\t|\.)/gm, '')
-			// 		.replace(/(\s+)/gm, ' ')
-
-			// 	let location = $(text)
-			// 		.find('p')
-			// 		.find('strong')
-			// 		.remove()
-
-			// 	eventList[index]['location'] = $(text)
-			// 		.find('p')
-			// 		.text()
-			// 		.replace(/(\r\n|\n|\r|\t)/gm, '')
-			// })
-			// res.json(eventList)
+						eventList[index]['time'] = $(html)
+							.find('.eventTimeDisplay time .eventTimeDisplay-startDate')
+							.first()
+							.text()
+					}
+					indexArr.push(index)
+					if (
+						indexArr.length ===
+							$('.event-listing-container .event-listing').length &&
+						indexArr.length === eventList.length
+					) {
+						res.json(eventList)
+					}
+				})
+			})
 		}
 	})
 })
