@@ -6,11 +6,18 @@ const jsonParser = require('body-parser').json()
 const debug = require('debug')('scraper:stanford-router')
 let cheerio = require('cheerio')
 
+var options = {
+	url: 'http://events.stanford.edu/',
+	headers: {
+		'User-Agent': 'request'
+	}
+}
+
 const stanfordRouter = (module.exports = new Router())
 
 stanfordRouter.get('/api/stanford/all', function(req, res, next) {
 	debug('GET: /api/events/stanford/all')
-	request('http://events.stanford.edu/', function(err, resp, html) {
+	request(options, function(err, resp, html) {
 		if (!err) {
 			let $ = cheerio.load(html)
 
