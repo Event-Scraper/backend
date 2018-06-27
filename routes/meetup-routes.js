@@ -60,11 +60,9 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 
 						let timeIdx = date.indexOf(time)
 						date = date.substring(0, timeIdx)
+						date = (date + ' ' + time).replace(/(\s+)/gm, ' ')
 
-						eventList[index]['time'] = (date + ' ' + time).replace(
-							/(\s+)/gm,
-							' '
-						)
+						eventList[index]['time'] = date
 						eventList[index]['imgUrl'] = $(html)
 							.find('.photoCarousel-photoContainer')
 							.first()
