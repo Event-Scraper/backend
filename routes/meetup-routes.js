@@ -28,10 +28,6 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 				index,
 				element
 			) {
-				console.log(
-					$('.event-listing-container .event-listing').length - 1,
-					index
-				)
 				let url = $(element)
 					.find('.row-item a')
 					.attr('href')
@@ -43,7 +39,7 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 					}
 				}
 				eventList[index] = {}
-
+				eventList[index]['url'] = url
 				eventList[index]['title'] = $(element)
 					.find('.event span[itemprop="name"]')
 					.text()
@@ -56,8 +52,22 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 							.find('.eventTimeDisplay time .eventTimeDisplay-startDate')
 							.first()
 							.text()
+						eventList[index]['imgUrl'] = $(html)
+							.find('.photoCarousel-photoContainer')
+							.first()
+							.attr('style')
+							? $(html)
+									.find('.photoCarousel-photoContainer')
+									.first()
+									.attr('style')
+									.replace(/^background-image:url\(["']?/, '')
+									.replace(/["']?\)$/, '')
+							: 'https://www.gumtree.com/static/1/resources/assets/rwd/images/orphans/a37b37d99e7cef805f354d47.noimage_thumbnail.png'
+
+						console.log(eventList[index]['imgUrl'])
 					}
 					indexArr.push(index)
+
 					if (
 						indexArr.length ===
 							$('.event-listing-container .event-listing').length &&
