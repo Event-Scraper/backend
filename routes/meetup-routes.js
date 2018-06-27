@@ -48,10 +48,23 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 					if (!err) {
 						let $ = cheerio.load(html)
 
-						eventList[index]['time'] = $(html)
+						let time = $(html)
+							.find('.eventTimeDisplay time .eventTimeDisplay-startDate-time')
+							.first()
+							.text()
+
+						let date = $(html)
 							.find('.eventTimeDisplay time .eventTimeDisplay-startDate')
 							.first()
 							.text()
+
+						let timeIdx = date.indexOf(time)
+						date = date.substring(0, timeIdx)
+
+						eventList[index]['time'] = (date + ' ' + time).replace(
+							/(\s+)/gm,
+							' '
+						)
 						eventList[index]['imgUrl'] = $(html)
 							.find('.photoCarousel-photoContainer')
 							.first()
