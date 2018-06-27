@@ -44,6 +44,8 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 					.find('.event span[itemprop="name"]')
 					.text()
 
+				eventList[index]['icon'] = 'fab fa-meetup'
+
 				request(optionsTwo, function(err, resp, html) {
 					if (!err) {
 						let $ = cheerio.load(html)
