@@ -40,11 +40,16 @@ stanfordRouter.get('/api/events/stanford/all', function(req, res, next) {
 				eventList[index]['title'] = $(text)
 					.find('h3')
 					.text()
+					.replace(/(\r\n|\n|\r|\t)/gm, '')
+					.replace(/(\s+)/gm, ' ')
+					.trim()
 
 				eventList[index]['time'] = $(text)
 					.find('p')
 					.find('strong')
 					.text()
+					.replace(/(\r\n|\n|\r|\t|\.)/gm, '')
+					.replace(/(\s+)/gm, ' ')
 
 				let location = $(text)
 					.find('p')
@@ -54,6 +59,7 @@ stanfordRouter.get('/api/events/stanford/all', function(req, res, next) {
 				eventList[index]['location'] = $(text)
 					.find('p')
 					.text()
+					.replace(/(\r\n|\n|\r|\t)/gm, '')
 			})
 			res.json(eventList)
 		}
