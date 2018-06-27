@@ -6,11 +6,18 @@ const jsonParser = require('body-parser').json()
 const debug = require('debug')('scraper:stanford-router')
 let cheerio = require('cheerio')
 
+var options = {
+	url: 'http://events.stanford.edu/',
+	headers: {
+		'User-Agent': 'request'
+	}
+}
+
 const stanfordRouter = (module.exports = new Router())
 
-stanfordRouter.get('/api/stanford/all', function(req, res, next) {
+stanfordRouter.get('/api/events/stanford/all', function(req, res, next) {
 	debug('GET: /api/events/stanford/all')
-	request('http://events.stanford.edu/', function(err, resp, html) {
+	request(options, function(err, resp, html) {
 		if (!err) {
 			let $ = cheerio.load(html)
 
@@ -33,11 +40,16 @@ stanfordRouter.get('/api/stanford/all', function(req, res, next) {
 				eventList[index]['title'] = $(text)
 					.find('h3')
 					.text()
+					.replace(/(\r\n|\n|\r|\t)/gm, '')
+					.replace(/(\s+)/gm, ' ')
+					.trim()
 
 				eventList[index]['time'] = $(text)
 					.find('p')
 					.find('strong')
 					.text()
+					.replace(/(\r\n|\n|\r|\t|\.)/gm, '')
+					.replace(/(\s+)/gm, ' ')
 
 				let location = $(text)
 					.find('p')
@@ -47,6 +59,7 @@ stanfordRouter.get('/api/stanford/all', function(req, res, next) {
 				eventList[index]['location'] = $(text)
 					.find('p')
 					.text()
+					.replace(/(\r\n|\n|\r|\t)/gm, '')
 			})
 			res.json(eventList)
 		}
