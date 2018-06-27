@@ -64,7 +64,13 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 									.replace(/["']?\)$/, '')
 							: 'https://www.gumtree.com/static/1/resources/assets/rwd/images/orphans/a37b37d99e7cef805f354d47.noimage_thumbnail.png'
 
-						console.log(eventList[index]['imgUrl'])
+						eventList[index]['location'] = $(html)
+							.find('.venueDisplay-venue-address')
+							.text()
+							? $(html)
+									.find('.venueDisplay-venue-address')
+									.text()
+							: 'Needs a Location'
 					}
 					indexArr.push(index)
 
