@@ -10,7 +10,6 @@ const stanfordRouter = (module.exports = new Router())
 
 stanfordRouter.get('/api/stanford/all', function(req, res, next) {
 	debug('GET: /api/events/stanford/all')
-	console.log('HELLO')
 	request('http://events.stanford.edu/', function(err, resp, html) {
 		if (!err) {
 			let $ = cheerio.load(html)
@@ -30,7 +29,24 @@ stanfordRouter.get('/api/stanford/all', function(req, res, next) {
 						.find('img')
 						.attr('src')
 
-				let mainDiv = $(element).find('.postcard-text')
+				let text = $(mainDiv).find('.postcard-text')
+				eventList[index]['title'] = $(text)
+					.find('h3')
+					.text()
+
+				eventList[index]['time'] = $(text)
+					.find('p')
+					.find('strong')
+					.text()
+
+				let location = $(text)
+					.find('p')
+					.find('strong')
+					.remove()
+
+				eventList[index]['location'] = $(text)
+					.find('p')
+					.text()
 			})
 			res.json(eventList)
 		}
