@@ -15,7 +15,7 @@ var options = {
 
 const stanfordRouter = (module.exports = new Router())
 
-stanfordRouter.get('/api/stanford/all', function(req, res, next) {
+stanfordRouter.get('/api/events/stanford/all', function(req, res, next) {
 	debug('GET: /api/events/stanford/all')
 	request(options, function(err, resp, html) {
 		if (!err) {

@@ -15,8 +15,8 @@ var options = {
 
 const eventbriteRouter = (module.exports = new Router())
 
-eventbriteRouter.get('/api/eventbrite/all', function(req, res, next) {
-	debug('GET: /api//eventbrite/all')
+eventbriteRouter.get('/api/events/eventbrite/all', function(req, res, next) {
+	debug('GET: /api//events/eventbrite/all')
 	request(options, function(err, resp, html) {
 		if (!err) {
 			let $ = cheerio.load(html)
