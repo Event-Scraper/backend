@@ -20,14 +20,23 @@ eventbriteRouter.get('/api/events/eventbrite/all', function(req, res, next) {
 	request(options, function(err, resp, html) {
 		if (!err) {
 			let $ = cheerio.load(html)
-			console.log(html)
 
 			let eventList = []
 			$('.js-events-list .g-cell .poster-card').each(function(index, element) {
 				eventList[index] = {}
 
+				eventList[index]['url'] = $(element).attr('data-share-url')
+				eventList[index]['imgUrl'] = $(element)
+					.find('a .poster-card__header .poster-card__image .js-poster-image')
+					.attr('src')
 				eventList[index]['title'] = $(element).attr('data-share-name')
-				console.log(eventList)
+
+				eventList[index]['time'] = $(element)
+					.find('a .poster-card__body .poster-card__date')
+					.text()
+				eventList[index]['location'] = $(element)
+					.find('a .poster-card__body .poster-card__venue')
+					.text()
 			})
 			res.json(eventList)
 		}
