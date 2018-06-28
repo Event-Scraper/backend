@@ -4,7 +4,7 @@
 	"description": "backend for event scraper",
 	"main": "server.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "DEBUG='scraper*' mocha ",
 		"start": "DEBUG='scraper*' node server.js"
 	},
 	"repository": {
