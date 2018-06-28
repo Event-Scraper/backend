@@ -42,7 +42,8 @@ eventbriteRouter.get('/api/events/eventbrite/all', function(req, res, next) {
 					.text()
 					.replace(/(\r\n|\n|\r|\t)/gm, '')
 					.trim()
-				eventList[index]['icon'] = "fas fa-graduation-cap"
+				eventList[index]['icon'] = 'fas fa-calendar-alt'
+				eventList[index]['source'] = 'Eventbrite'
 			})
 			res.json(eventList)
 		}

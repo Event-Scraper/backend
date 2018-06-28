@@ -13,8 +13,13 @@ const eventbrite = require('./routes/eventbrite-routes')
 const meetup = require('./routes/meetup-routes')
 const app = express()
 const PORT = process.env.PORT || 3000
-// const CORS_ORIGINS = process.env.CORS_ORIGINS
-app.use(cors())
+const CORS_ORIGINS = process.env.CORS_ORIGINS
+app.use(
+	cors({
+		origin: CORS_ORIGINS.split(' '),
+		credentials: true
+	})
+)
 app.use(morgan('dev'))
 
 app.use(stanford)

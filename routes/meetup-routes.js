@@ -39,6 +39,7 @@ meetupRouter.get('/api/events/meetup/all', function(req, res, next) {
 					}
 				}
 				eventList[index] = {}
+				eventList[index]['source'] = 'Meetup'
 				eventList[index]['url'] = url
 				eventList[index]['title'] = $(element)
 					.find('.event span[itemprop="name"]')
